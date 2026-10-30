@@ -18,13 +18,25 @@ public class ChallengeConfig {
     public static final String NO_REGEN = "no-regen";                   // 禁止任意形式回血 x3.2
     public static final String NO_VANILLA_TOOLS = "no-vanilla-tools";   // 禁用原版辅助道具 x1.5
     public static final String HALF_TIME = "half-time";                 // 考核时间减半 x2
-    public static final String NO_SWORD_AXE = "no-sword-axe";           // 禁用剑和斧 x2
+    public static final String NO_WEAPON = "no-weapon";                 // 禁用武器（剑/斧/重锤/矛） x2
+    public static final String LEGACY_NO_SWORD_AXE = "no-sword-axe";    // 旧 ID，仅用于配置/数据迁移
     public static final String NO_ARMOR = "no-armor";                   // 不允许穿戴护甲 x5
 
     private final Map<String, Double> multipliers = new LinkedHashMap<>();
 
     public ChallengeConfig() {
         resetDefaults();
+    }
+
+    /**
+     * 将旧挑战 ID 统一为新 ID；未知 ID 仅做小写处理。
+     */
+    public static String canonicalId(String id) {
+        if (id == null) {
+            return null;
+        }
+        String normalized = id.toLowerCase(Locale.ROOT);
+        return normalized.equals(LEGACY_NO_SWORD_AXE) ? NO_WEAPON : normalized;
     }
 
     private void resetDefaults() {
@@ -35,33 +47,40 @@ public class ChallengeConfig {
         multipliers.put(NO_REGEN, 3.2);
         multipliers.put(NO_VANILLA_TOOLS, 1.5);
         multipliers.put(HALF_TIME, 2.0);
-        multipliers.put(NO_SWORD_AXE, 2.0);
+        multipliers.put(NO_WEAPON, 2.0);
         multipliers.put(NO_ARMOR, 5.0);
     }
 
     /**
      * 从配置节覆盖默认倍率（只读正值项）。
      * 每次加载先恢复默认值，确保 reload 后已删除的挑战不会残留旧倍率。
+     * 旧的 no-sword-axe 会自动迁移为 no-weapon；若两者同时存在，以 no-weapon 为准。
      */
     public void load(ConfigurationSection section) {
         resetDefaults();
         if (section == null) {
             return;
         }
+        boolean hasNewWeaponId = section.isSet(NO_WEAPON);
         for (String key : section.getKeys(false)) {
+            if (hasNewWeaponId && key.equalsIgnoreCase(LEGACY_NO_SWORD_AXE)) {
+                continue;
+            }
             double value = section.getDouble(key, 0.0);
             if (value > 0) {
-                multipliers.put(key.toLowerCase(Locale.ROOT), value);
+                multipliers.put(canonicalId(key), value);
             }
         }
     }
 
     public boolean exists(String id) {
-        return id != null && multipliers.containsKey(id.toLowerCase(Locale.ROOT));
+        String canonical = canonicalId(id);
+        return canonical != null && multipliers.containsKey(canonical);
     }
 
     public double getMultiplier(String id) {
-        return multipliers.getOrDefault(id.toLowerCase(Locale.ROOT), 1.0);
+        String canonical = canonicalId(id);
+        return canonical == null ? 1.0 : multipliers.getOrDefault(canonical, 1.0);
     }
 
     public Map<String, Double> getMultipliers() {

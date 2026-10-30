@@ -59,6 +59,13 @@ exam-force-start: "&a已强制开始考核 &e{exam} &a（玩家：{player}）"
 # 强制开始失败（目标玩家已收到具体原因，{exam}/{player}）
 exam-force-start-failed: "&c未能强制开始考核 &e{exam} &c（玩家：{player}）"
 
+# ---------------- 考核开放 / 结束公告 ----------------
+
+# 到达开放时间时全服公告，占位符：{exam} 显示名 / {id} 考核 ID / {window} 开放时段
+exam-notification-open: "&8[&6考核&8] &e{exam} &a已开放！ &7({window})"
+# 开放时间结束时全服公告，占位符同上
+exam-notification-close: "&8[&6考核&8] &e{exam} &c已结束开放。 &7({window})"
+
 # ---------------- 提醒（音效 + 提示） ----------------
 
 # 考核剩余时间提醒，{time} = 剩余秒数
@@ -93,7 +100,7 @@ challenge-name-no-natural-regen: "禁止自然回血"
 challenge-name-no-regen: "禁止任意形式回血"
 challenge-name-no-vanilla-tools: "禁用原版辅助道具"
 challenge-name-half-time: "考核时间减半"
-challenge-name-no-sword-axe: "禁用剑和斧"
+challenge-name-no-weapon: "禁用武器（剑/斧/重锤/矛）"
 challenge-name-no-armor: "不允许穿戴护甲"
 
 # ---------------- 个人设置 ----------------

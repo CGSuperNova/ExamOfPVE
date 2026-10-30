@@ -185,8 +185,9 @@ public class ExamManager {
 
         // 挑战：玩家已选择的挑战（过滤无效 / 该考核不允许的）
         Set<String> challenges = new LinkedHashSet<>();
-        for (String id : plugin.getDataManager().getSelectedChallenges(player.getUniqueId())) {
-            if (configManager.getChallengeConfig().exists(id) && exam.isChallengeAllowed(id)) {
+        for (String rawId : plugin.getDataManager().getSelectedChallenges(player.getUniqueId())) {
+            String id = ChallengeConfig.canonicalId(rawId);
+            if (id != null && configManager.getChallengeConfig().exists(id) && exam.isChallengeAllowed(id)) {
                 challenges.add(id);
             }
         }

@@ -9,6 +9,7 @@ import com.examofpve.listener.PlayerListener;
 import com.examofpve.listener.WorldProtectionListener;
 import com.examofpve.manager.DataManager;
 import com.examofpve.manager.ExamManager;
+import com.examofpve.manager.ExamNotificationService;
 import com.examofpve.manager.WorldManager;
 import com.examofpve.mob.MobSpawner;
 import com.examofpve.placeholderapi.PlaceholderAPIExpansion;
@@ -28,6 +29,7 @@ public final class ExamOfPVEPlugin extends JavaPlugin {
     private EconomyService economyService;
     private DataManager dataManager;
     private ExamManager examManager;
+    private ExamNotificationService notificationService;
 
     @Override
     public void onEnable() {
@@ -39,6 +41,8 @@ public final class ExamOfPVEPlugin extends JavaPlugin {
         economyService = new EconomyService();
         dataManager = new DataManager(this);
         examManager = new ExamManager(this);
+        notificationService = new ExamNotificationService(this);
+        notificationService.start();
 
         PluginCommand command = getCommand("exam");
         if (command != null) {
@@ -66,6 +70,9 @@ public final class ExamOfPVEPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (notificationService != null) {
+            notificationService.stop();
+        }
         if (examManager != null) {
             examManager.shutdown();
         }

@@ -25,4 +25,29 @@ class ChallengeConfigTest {
         assertEquals(1.4, challenges.getMultiplier("half-health"), 1e-9);
         assertFalse(challenges.exists("custom-challenge"));
     }
+
+    @Test
+    void legacySwordAxeIdMigratesToNoWeapon() {
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("challenges.no-sword-axe", 2.5);
+
+        ChallengeConfig challenges = new ChallengeConfig();
+        challenges.load(config.getConfigurationSection("challenges"));
+        assertEquals("no-weapon", ChallengeConfig.canonicalId("no-sword-axe"));
+        assertTrue(challenges.exists("no-weapon"));
+        assertTrue(challenges.exists("no-sword-axe"));
+        assertEquals(2.5, challenges.getMultiplier("no-weapon"), 1e-9);
+        assertEquals(2.5, challenges.getMultiplier("no-sword-axe"), 1e-9);
+    }
+
+    @Test
+    void newWeaponIdWinsWhenBothKeysExist() {
+        YamlConfiguration config = new YamlConfiguration();
+        config.set("challenges.no-sword-axe", 2.5);
+        config.set("challenges.no-weapon", 3.0);
+
+        ChallengeConfig challenges = new ChallengeConfig();
+        challenges.load(config.getConfigurationSection("challenges"));
+        assertEquals(3.0, challenges.getMultiplier("no-weapon"), 1e-9);
+    }
 }

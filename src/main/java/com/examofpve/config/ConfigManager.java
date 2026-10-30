@@ -2,6 +2,7 @@ package com.examofpve.config;
 
 import com.examofpve.ExamOfPVEPlugin;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -45,6 +46,12 @@ public class ConfigManager {
     private int pauseWarningAt = 5;           // 暂停剩余时间提醒点（秒）
     private List<Integer> lowHealthWarningAt = List.of(20, 10);   // 低血量提醒阈值（最大生命百分比）
     private int prepTimeSeconds = 5;          // 考核预备阶段时长（秒），0 = 关闭
+    private boolean examNotificationEnabled = true;
+    private boolean notificationSoundEnabled = true;
+    private Sound notificationOpenSound = Sound.BLOCK_NOTE_BLOCK_PLING;
+    private Sound notificationCloseSound = Sound.BLOCK_NOTE_BLOCK_BASS;
+    private float notificationSoundVolume = 1.0f;
+    private float notificationSoundPitch = 1.0f;
 
     public ConfigManager(ExamOfPVEPlugin plugin) {
         this.plugin = plugin;
@@ -99,6 +106,18 @@ public class ConfigManager {
         lowHealthWarningAt = parseSortedIntList(config, "settings.low-health-warning-at",
                 List.of(20, 10), 100);
         prepTimeSeconds = Math.max(0, config.getInt("settings.prep-time-seconds", 5));
+        examNotificationEnabled = config.getBoolean("settings.exam-notifications.enabled", true);
+        notificationSoundEnabled = config.getBoolean("settings.exam-notifications.sound.enabled", true);
+        notificationOpenSound = parseNotificationSound(
+                config.getString("settings.exam-notifications.sound.open", "BLOCK_NOTE_BLOCK_PLING"),
+                Sound.BLOCK_NOTE_BLOCK_PLING, "open");
+        notificationCloseSound = parseNotificationSound(
+                config.getString("settings.exam-notifications.sound.close", "BLOCK_NOTE_BLOCK_BASS"),
+                Sound.BLOCK_NOTE_BLOCK_BASS, "close");
+        notificationSoundVolume = (float) Math.max(0.0,
+                Math.min(4.0, config.getDouble("settings.exam-notifications.sound.volume", 1.0)));
+        notificationSoundPitch = (float) Math.max(0.5,
+                Math.min(2.0, config.getDouble("settings.exam-notifications.sound.pitch", 1.0)));
         challenges.load(config.getConfigurationSection("challenges"));
         parseMobPools();
 
@@ -138,6 +157,23 @@ public class ConfigManager {
             if (pool != null) {
                 mobPools.put(key.toLowerCase(Locale.ROOT), pool);
             }
+        }
+    }
+
+    /**
+     * 解析公告音效名（Bukkit Sound 枚举名，如 BLOCK_NOTE_BLOCK_PLING）。
+     * 留空返回 null（该事件不播放音效）；非法名称回退默认值并输出警告。
+     */
+    private Sound parseNotificationSound(String raw, Sound fallback, String key) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        try {
+            return Sound.valueOf(raw.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("无效的考核公告音效 " + key + "：" + raw
+                    + "，已回退为 " + fallback.name());
+            return fallback;
         }
     }
 
@@ -246,6 +282,30 @@ public class ConfigManager {
 
     public int getPrepTimeSeconds() {
         return prepTimeSeconds;
+    }
+
+    public boolean isExamNotificationEnabled() {
+        return examNotificationEnabled;
+    }
+
+    public boolean isNotificationSoundEnabled() {
+        return notificationSoundEnabled;
+    }
+
+    public Sound getNotificationOpenSound() {
+        return notificationOpenSound;
+    }
+
+    public Sound getNotificationCloseSound() {
+        return notificationCloseSound;
+    }
+
+    public float getNotificationSoundVolume() {
+        return notificationSoundVolume;
+    }
+
+    public float getNotificationSoundPitch() {
+        return notificationSoundPitch;
     }
 
     // ---------------- 消息工具 ----------------

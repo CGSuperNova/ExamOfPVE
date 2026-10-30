@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * 挑战限制（考核中生效，仅在携带对应挑战的会话内拦截）：
- * 回血限制、禁用原版辅助道具、禁用剑斧、禁止穿戴护甲。
+ * 回血限制、禁用原版辅助道具、禁用武器（剑/斧/重锤/矛）、禁止穿戴护甲。
  */
 public class ChallengeListener implements Listener {
 
@@ -115,7 +115,7 @@ public class ChallengeListener implements Listener {
         }
     }
 
-    // ---------------- 禁用剑和斧 ----------------
+    // ---------------- 禁用武器（剑/斧/重锤/矛） ----------------
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
@@ -123,10 +123,10 @@ public class ChallengeListener implements Listener {
             return;
         }
         ExamSession session = manager().getSession(player.getUniqueId());
-        if (session == null || !session.hasChallenge(ChallengeConfig.NO_SWORD_AXE)) {
+        if (session == null || !session.hasChallenge(ChallengeConfig.NO_WEAPON)) {
             return;
         }
-        if (isSwordOrAxe(player.getInventory().getItemInMainHand().getType())) {
+        if (isBannedWeapon(player.getInventory().getItemInMainHand().getType())) {
             event.setCancelled(true);
         }
     }
@@ -162,9 +162,14 @@ public class ChallengeListener implements Listener {
                 || material == Material.FIREWORK_ROCKET;
     }
 
-    private boolean isSwordOrAxe(Material material) {
+    static boolean isBannedWeapon(Material material) {
+        if (material == Material.MACE) {
+            return true;
+        }
         String name = material.name();
-        return name.endsWith("_SWORD") || name.endsWith("_AXE");
+        return name.endsWith("_SWORD")
+                || name.endsWith("_AXE")
+                || name.endsWith("_SPEAR");
     }
 
     private boolean isArmor(Material material) {

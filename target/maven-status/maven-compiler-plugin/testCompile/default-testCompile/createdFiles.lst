@@ -2,5 +2,6 @@ com\examofpve\config\MobRegionTest.class
 com\examofpve\config\ChallengeConfigTest.class
 com\examofpve\config\TimeWindowTest.class
 com\examofpve\manager\ExamManagerTest.class
-com\examofpve\config\MobPoolTest.class
 com\examofpve\config\MobSpawnConfigTest.class
+com\examofpve\listener\ChallengeListenerTest.class
+com\examofpve\config\MobPoolTest.class

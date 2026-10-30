@@ -26,6 +26,19 @@ settings:
   # （false = 全部显示，未开放的标注"未开放"；true = 不显示未开放的考核）
   list-hide-closed: false
 
+  # 考核开放 / 结束开放的全服公告。
+  # 公告内容在 messages.yml 的 exam-notification-open / exam-notification-close 中自定义，
+  # 支持占位符 {exam}（显示名）、{id}（考核 ID）、{window}（开放时段）。
+  exam-notifications:
+    enabled: true
+    # 音效名称使用 Bukkit Sound 枚举名；留空表示该事件不播放音效。
+    sound:
+      enabled: true
+      open: "BLOCK_NOTE_BLOCK_PLING"
+      close: "BLOCK_NOTE_BLOCK_BASS"
+      volume: 1.0
+      pitch: 1.0
+
   # 虚空传送：考核中的玩家 Y 坐标低于该值（1.21.11 虚空在 -64 以下）时，
   # 立即传送回考核出生点。
   void-teleport-y: -64.0
@@ -66,7 +79,7 @@ challenges:
   no-regen: 3.2               # 禁止任意形式回血（金苹果/药水等也不可）
   no-vanilla-tools: 1.5       # 禁用原版辅助道具（不死图腾/末影珍珠/鞘翅+烟花/药水）
   half-time: 2.0              # 考核限定时间减半
-  no-sword-axe: 2.0           # 不允许用剑和斧
+  no-weapon: 2.0              # 不允许使用剑、斧、重锤和矛
   no-armor: 5.0               # 不允许穿戴护甲
 
 # ----------------------------------------------------------------

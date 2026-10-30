@@ -148,7 +148,7 @@ public class ExamConfig {
         Set<String> set = new HashSet<>();
         for (String item : s.getStringList("allowed-challenges")) {
             if (item != null && !item.isBlank()) {
-                set.add(item.trim().toLowerCase(Locale.ROOT));
+                set.add(ChallengeConfig.canonicalId(item.trim()));
             }
         }
         return set;

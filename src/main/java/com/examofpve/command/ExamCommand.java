@@ -1,6 +1,7 @@
 package com.examofpve.command;
 
 import com.examofpve.ExamOfPVEPlugin;
+import com.examofpve.config.ChallengeConfig;
 import com.examofpve.config.ConfigManager;
 import com.examofpve.config.ExamConfig;
 import com.examofpve.manager.DataManager;
@@ -207,7 +208,7 @@ public class ExamCommand implements CommandExecutor, TabCompleter {
             cfg.send(sender, "challenge-usage");
             return;
         }
-        String id = args[1].toLowerCase(Locale.ROOT);
+        String id = ChallengeConfig.canonicalId(args[1]);
         if (!cfg.getChallengeConfig().exists(id)) {
             cfg.send(player, "challenge-not-found", Map.of("id", id));
             return;

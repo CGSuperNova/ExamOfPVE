@@ -1,6 +1,7 @@
 package com.examofpve.manager;
 
 import com.examofpve.ExamOfPVEPlugin;
+import com.examofpve.config.ChallengeConfig;
 import com.examofpve.session.PendingEffects;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,18 +55,26 @@ public class DataManager {
     // ---------------- 挑战选择 ----------------
 
     public Set<String> getSelectedChallenges(UUID playerId) {
-        return new HashSet<>(data.getStringList("challenges." + playerId));
+        Set<String> result = new HashSet<>();
+        for (String id : data.getStringList("challenges." + playerId)) {
+            if (id != null && !id.isBlank()) {
+                result.add(ChallengeConfig.canonicalId(id));
+            }
+        }
+        return result;
     }
 
     public void setChallenge(UUID playerId, String id, boolean enabled) {
+        String canonical = ChallengeConfig.canonicalId(id);
+        if (canonical == null) {
+            return;
+        }
         String path = "challenges." + playerId;
         List<String> list = new ArrayList<>(data.getStringList(path));
+        // 同时清理旧 ID，避免 no-sword-axe 与 no-weapon 并存
+        list.removeIf(existing -> canonical.equals(ChallengeConfig.canonicalId(existing)));
         if (enabled) {
-            if (!list.contains(id)) {
-                list.add(id);
-            }
-        } else {
-            list.remove(id);
+            list.add(canonical);
         }
         data.set(path, list);
         save();
