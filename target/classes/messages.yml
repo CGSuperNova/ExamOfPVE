@@ -1,0 +1,145 @@
+# ================================================================
+#  ExamOfPVE 消息配置（支持 & 颜色代码）
+#  可用占位符：{exam} {time} {kills} {total} {display} {window} {status}
+#             {name} {id} {multiplier} {count} {points} {fee}
+#             {player} {plays} {wins} {best} {rank} {seconds} {left} {key}
+#             {index} {time-used} {extra}
+# ================================================================
+
+prefix: "&8[&6ExamOfPVE&8] &r"
+
+no-permission: "&c你没有权限执行此命令。"
+only-player: "&c该命令只能由玩家执行。"
+not-in-exam: "&c你当前没有正在进行中的考核。"
+player-not-found: "&c找不到玩家：&e{player}"
+
+exam-not-found: "&c找不到考核：&e{exam}"
+exam-already-running: "&c你已经在进行考核了，无法再次开始。"
+exam-finishing: "&c上一场考核正在收尾，请稍候再开始新的考核。"
+exam-window-closed: "&c该考核当前不在开放时间内。"
+exam-no-free-world: "&c当前没有空闲的考核场地，请稍后再试。"
+exam-world-loading: "&a正在加载考核场地，请稍候..."
+exam-world-load-failed: "&c考核场地加载失败，请稍后再试。"
+exam-started: "&a考核 &e{exam} &a开始！限时 &e{time} &a秒，击杀全部目标即可通过。"
+exam-challenges-active: "&a已携带 &e{count} &a个挑战，奖励倍率 &ex{multiplier}&a。"
+exam-success: "&a恭喜！你已通过考核 &e{exam} &a！奖励已发放。"
+exam-success-multiplier: "&7本场挑战倍率：&ex{multiplier}"
+exam-fail-timeout: "&c时间到，考核失败！"
+exam-fail-death: "&c你阵亡了，考核失败！"
+exam-fail-abort: "&c你已终止考核，判定为失败。"
+exam-fail-quit: "&c你退出了游戏，考核失败。"
+exam-fail-error: "&c考核出现异常，判定为失败。"
+# 最终成绩附加信息：本场使用过暂停时显示次数
+exam-result-pauses: "&7本场暂停：&e{count} &7次"
+
+entry-fee-not-enough: "&c金币不足，参加该考核需要 &e{fee}&c 金币。"
+entry-fee-no-economy: "&c经济系统不可用，无法扣除考核费用。"
+
+command-blocked: "&c考核进行中，不能使用该命令。"
+command-blocked-finishing: "&c考核正在收尾，请稍候再使用命令。"
+challenge-tool-blocked: "&c该道具在挑战中已被禁用。"
+
+# ---------------- 考核暂停 ----------------
+
+exam-pause-prompt: "&e再按 {clicks} 次 {key} 暂停考核（本场剩余 {left} 次，每次 {seconds} 秒）"
+exam-paused: "&e考核已暂停！{seconds} 秒后自动恢复（再按 {key} {clicks} 次可提前恢复）"
+exam-resumed: "&a考核继续！"
+exam-pause-limit: "&c本场暂停次数已用完。"
+
+# ---------------- 考核预备 / 强制开始 ----------------
+
+# 考核预备阶段开始（{seconds} = 预备秒数）
+exam-prep-start: "&e考核场地已就绪！&a{seconds}&e 秒后正式开始考核，请做好准备！"
+# 预备倒计时（subtitle，{seconds} = 剩余秒数）
+exam-prep-countdown: "&e考核将在 &c{seconds} &e秒后开始"
+# 预备结束、考核正式开始（subtitle）
+exam-prep-go: "&a考核开始！"
+# 强制开始考核（发送给执行命令的管理员，{exam}/{player}）
+exam-force-start: "&a已强制开始考核 &e{exam} &a（玩家：{player}）"
+# 强制开始失败（目标玩家已收到具体原因，{exam}/{player}）
+exam-force-start-failed: "&c未能强制开始考核 &e{exam} &c（玩家：{player}）"
+
+# ---------------- 提醒（音效 + 提示） ----------------
+
+# 考核剩余时间提醒，{time} = 剩余秒数
+time-warning: "&c⚠ &e考核即将结束！剩余 &c{time} &e秒！"
+# 暂停剩余时间提醒，{seconds} = 剩余秒数
+pause-warning: "&c⚠ &e暂停即将结束！剩余 &c{seconds} &e秒！"
+# 低血量提醒，{percent} = 最大生命百分比
+low-health-warning: "&c⚠ &4生命值过低！当前仅剩 &c{percent}% &4生命！"
+# 考核结束后的传送延迟提示，{seconds} = 停留秒数
+exam-end-teleport-delay: "&e考核结束！&a{seconds}&e 秒后将自动传送回出发点。"
+
+exam-list-header: "&6可用的考核："
+exam-list-entry: "&e- &f{exam} &7{display} &8[开放时间: {window}] &f{status}"
+exam-list-available: "&a可参加"
+exam-list-closed: "&c未开放"
+exam-list-none: "&7当前没有配置任何考核。"
+
+# ---------------- 挑战 ----------------
+
+challenge-list-header: "&6可携带的挑战（/exam challenge <id> [on|off] 切换）："
+challenge-list-entry: "&e{id} &7{name} &8[x{multiplier}] &f{status}"
+challenge-status-on: "&a✔ 已开启"
+challenge-status-off: "&7未开启"
+challenge-usage: "&7用法：&f/exam challenge <id> [on|off]"
+challenge-not-found: "&c找不到挑战：&e{id}"
+challenge-enabled: "&a已开启挑战 &e{name} &a(x{multiplier})"
+challenge-disabled: "&7已关闭挑战 &e{name}"
+
+challenge-name-half-health: "生命值减半"
+challenge-name-double-mobs: "怪物数量x2"
+challenge-name-no-natural-regen: "禁止自然回血"
+challenge-name-no-regen: "禁止任意形式回血"
+challenge-name-no-vanilla-tools: "禁用原版辅助道具"
+challenge-name-half-time: "考核时间减半"
+challenge-name-no-sword-axe: "禁用剑和斧"
+challenge-name-no-armor: "不允许穿戴护甲"
+
+# ---------------- 个人设置 ----------------
+
+settings-header: "&6个人考核设置（/exam settings [key] [on|off]）："
+settings-entry: "&e{key} &7{name} &f{status}"
+setting-status-on: "&a✔ 已开启"
+setting-status-off: "&7未开启"
+settings-not-found: "&c未知设置项：&e{key}"
+settings-enabled: "&a已开启 &e{name}&a。"
+settings-disabled: "&7已关闭 &e{name}&7。"
+setting-name-mob-glow: "剩余怪物高亮"
+
+# ---------------- 排行榜 / 统计 / 人数 ----------------
+
+top-header: "&6考核 &e{exam} &6排行榜（前 10）："
+top-entry: "&e#{rank} &f{player} &8- &a{time}"
+top-none: "&7考核 &e{exam} &7暂无成绩记录。"
+stats-entry: "&e{player} &7在考核 &e{exam} &7中：参加 &a{plays}&7 次，成功 &a{wins}&7 次，最佳时间 &a{best}&7。"
+playing-header: "&6当前各考核进行中人数："
+playing-entry: "&e- &f{exam} &7: &a{count} &7人"
+
+# ---------------- 考核日志 ----------------
+
+log-header: "&6考核 &e{exam} &6最近 {count} 次记录："
+log-entry: "&7{index}. &f{time} &8| &f{result} &8| 用时 {time-used}{extra}"
+log-none: "&7考核 &e{exam} &7暂无记录。"
+exam-log-result-SUCCESS: "&a成功"
+exam-log-result-TIMEOUT: "&c超时"
+exam-log-result-DEATH: "&c死亡"
+exam-log-result-ABORT: "&e终止"
+exam-log-result-QUIT: "&e退出"
+exam-log-result-ERROR: "&4异常"
+
+# ---------------- 奖励 ----------------
+
+first-win-reward: "&e初次通过奖励已发放！"
+challenge-complete-reward: "&a完成 &e{count} &a个挑战，额外奖励已发放！"
+
+reload-success: "&a配置已重新加载。"
+
+usage: "&7用法：&f/exam list &8| &f/exam start <id> &8| &f/exam forcestart <id> [玩家] &8| &f/exam abort &8| &f/exam challenges &8| &f/exam challenge <id> [on|off] &8| &f/exam settings [mob-glow] [on|off] &8| &f/exam top <id> &8| &f/exam stats <id> [玩家] &8| &f/exam playing [id] &8| &f/exam log <id> [玩家] &8| &f/exam reload"
+
+# 考核 BossBar（顶部血条）标题。为兼容性建议少用颜色，占位符：{exam} {kills} {total} {time}
+bossbar-title: "&6{exam}  &f击杀: &a{kills}&f/&a{total}  &7剩余: &e{time}s"
+# 暂停中的 BossBar 标题，占位符：{seconds}
+bossbar-paused: "&e⏸ 已暂停 &7(剩余 &f{seconds}&7s)"
+# 预备阶段的 BossBar 标题，占位符：{seconds}
+bossbar-prep: "&e⏳ 准备阶段 &7({seconds}s 后开始)"

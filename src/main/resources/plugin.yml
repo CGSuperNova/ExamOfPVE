@@ -1,0 +1,28 @@
+name: ExamOfPVE
+version: 1.4.1
+main: com.examofpve.ExamOfPVEPlugin
+api-version: '1.21'
+authors: [ExamOfPVE]
+description: Paper 1.21.11 PVE 考核系统插件
+website: https://github.com/CGSuperNova
+
+# 软依赖：存在时启用对应功能，缺失时插件仍可启动
+softdepend:
+  - Multiverse-Core
+  - MythicMobs
+  - Vault
+  - PlaceholderAPI
+
+commands:
+  exam:
+    description: ExamOfPVE 主命令
+    usage: /exam <list|start|forcestart|abort|settings|reload>
+    aliases: [examofpve, pveexam]
+
+permissions:
+  examofpve.use:
+    description: 使用考核命令（list / start / abort / settings）
+    default: true
+  examofpve.admin:
+    description: 管理考核插件（reload）
+    default: op
